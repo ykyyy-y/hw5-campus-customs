@@ -3,15 +3,25 @@
 # Set up (from the HW 5 folder):
 #   python -m venv .venv
 #   .venv/Scripts/python.exe -m pip install -r requirements.txt
+#
+# Versions are pinned to what this project was built and run against, so a clean
+# clone reproduces the recorded run rather than whatever resolves today.
 
-# MCP server
-fastmcp
+# MCP server — the only route to the shop database
+fastmcp==4.0.11
 
-# Backend API (added in a later problem)
-fastapi
-uvicorn[standard]
+# The agent team: Boss, Inventory, Accounting, Facilities, Customer Service.
+# The -slim distribution with the openai extra is what talks to Portkey.
+pydantic-ai-slim[openai]==2.54.0
+
+# Backend API serving the React dashboard
+fastapi==0.143.0
+uvicorn[standard]==0.54.0
+
+# Data types for agent outputs and the audit trail
+pydantic==2.14.0
 
 # Model access: gpt-6-luna through the Portkey gateway
-openai
-portkey-ai
-python-dotenv
+openai==3.26.1
+portkey-ai==2.3.4
+python-dotenv==1.2.4
