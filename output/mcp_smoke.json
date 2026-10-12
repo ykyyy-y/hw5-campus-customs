@@ -1,0 +1,126 @@
+{
+  "assignment": "HW 5 \u2014 Campus Customs Multi-Agent Operations",
+  "step": "Problem 4 \u2014 MCP server connected and every tool smoke-tested",
+  "server_name": "campus-customs",
+  "mcp_config": ".mcp.json",
+  "transport": "stdio (server launched as a subprocess, real MCP handshake)",
+  "database": "data/campus_customs_new.db",
+  "shop_date_today": "2026-08-31",
+  "run_at_utc": "2026-10-08T15:05:56+00:00",
+  "tools_advertised_by_server": [
+    "check_stock",
+    "get_rent_due",
+    "price_quote"
+  ],
+  "tools_tested": [
+    "check_stock",
+    "get_rent_due",
+    "price_quote"
+  ],
+  "all_tools_tested": true,
+  "all_outputs_match_database": true,
+  "tests": [
+    {
+      "ticket": 101,
+      "prompt": "Ticket 101 is Tauhid Zaman asking for a Classic Bulldog Tee in size S. Use the campus-customs MCP server to check stock for CC-TEE-WHITE size S for 1 unit, and tell me whether we can fill it and by how much we are short.",
+      "tool": "check_stock",
+      "arguments": {
+        "sku": "CC-TEE-WHITE",
+        "size": "S",
+        "qty_wanted": 1
+      },
+      "output": {
+        "found": true,
+        "sku": "CC-TEE-WHITE",
+        "name": "Classic Bulldog Tee",
+        "size": "S",
+        "on_hand": 0,
+        "location": "Aisle B",
+        "qty_wanted": 1,
+        "can_fill": false,
+        "shortfall": 1,
+        "as_of": "2026-08-31"
+      },
+      "verification": {
+        "sql": "SELECT name, qty AS on_hand, location FROM inventory WHERE sku = 'CC-TEE-WHITE' AND size = 'S'",
+        "database_row": {
+          "name": "Classic Bulldog Tee",
+          "on_hand": 0,
+          "location": "Aisle B"
+        },
+        "matches_database": true,
+        "mismatches": {}
+      }
+    },
+    {
+      "ticket": 102,
+      "prompt": "Ticket 102 is a rent notice from Elm City Properties on lease 1, and the email claims rent is due in 2 days. Use the campus-customs MCP server to get the rent due for lease 1 and confirm the amount and the due date against the shop's own date_today rather than the email.",
+      "tool": "get_rent_due",
+      "arguments": {
+        "lease_id": 1
+      },
+      "output": {
+        "found": true,
+        "lease_id": 1,
+        "space_name": "Chapel Street shop",
+        "landlord": "Elm City Properties",
+        "monthly_rent": 2400.0,
+        "next_due": "2026-09-02",
+        "notes": null,
+        "today": "2026-08-31",
+        "days_until_due": 2,
+        "is_overdue": false
+      },
+      "verification": {
+        "sql": "SELECT space_name, landlord, monthly_rent, next_due FROM leases WHERE id = 1",
+        "database_row": {
+          "space_name": "Chapel Street shop",
+          "landlord": "Elm City Properties",
+          "monthly_rent": 2400.0,
+          "next_due": "2026-09-02"
+        },
+        "matches_database": true,
+        "mismatches": {}
+      }
+    },
+    {
+      "ticket": 103,
+      "prompt": "Ticket 103 is the Yale AI Club asking for a bulk discount on 20 CC-HOOD-NAVY hoodies in size M. Use the campus-customs MCP server to price 20 units and test a 20 percent discount at $46.40 per unit \u2014 I want the list margin, the cost floor, and whether that proposed price still clears cost.",
+      "tool": "price_quote",
+      "arguments": {
+        "sku": "CC-HOOD-NAVY",
+        "qty": 20,
+        "proposed_unit_price": 46.4
+      },
+      "output": {
+        "found": true,
+        "sku": "CC-HOOD-NAVY",
+        "qty": 20,
+        "unit_cost": 22.0,
+        "list_price": 58.0,
+        "total_cost": 440.0,
+        "list_revenue": 1160.0,
+        "list_margin": 720.0,
+        "list_margin_pct": 62.1,
+        "cost_floor_unit_price": 22.0,
+        "max_discount_pct_before_cost": 62.1,
+        "as_of": "2026-08-31",
+        "proposed_unit_price": 46.4,
+        "proposed_discount_pct": 20.0,
+        "proposed_revenue": 928.0,
+        "proposed_margin": 488.0,
+        "proposed_margin_pct": 52.6,
+        "above_cost": true
+      },
+      "verification": {
+        "sql": "SELECT unit_cost, list_price FROM pricing WHERE sku = 'CC-HOOD-NAVY'",
+        "database_row": {
+          "unit_cost": 22.0,
+          "list_price": 58.0
+        },
+        "matches_database": true,
+        "mismatches": {}
+      }
+    }
+  ]
+}

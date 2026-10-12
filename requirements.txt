@@ -1,0 +1,17 @@
+# Campus Customs HW 5 — Multi-Agent Operations
+#
+# Set up (from the HW 5 folder):
+#   python -m venv .venv
+#   .venv/Scripts/python.exe -m pip install -r requirements.txt
+
+# MCP server
+fastmcp
+
+# Backend API (added in a later problem)
+fastapi
+uvicorn[standard]
+
+# Model access: gpt-6-luna through the Portkey gateway
+openai
+portkey-ai
+python-dotenv

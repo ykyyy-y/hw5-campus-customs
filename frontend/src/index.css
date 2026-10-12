@@ -1,0 +1,653 @@
+/* ============================================================================
+   Campus Customs — The Desk
+   A shop desk, not an admin panel: paper on the left, a live wire down the
+   middle, the cash drawer on the right.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root {
+  /* Pink is the house colour: warm, soft, a little unserious — a campus
+     merch shop, not a bank. Depth comes from warm neutrals, not grey. */
+  --rose-50:  #fff8fa;
+  --rose-75:  #fff2f6;
+  --rose-100: #ffeaf1;
+  --rose-150: #ffdfe9;
+  --rose-200: #ffd0e0;
+  --rose-300: #f7b3cb;
+  --rose-400: #ef8cae;
+  --rose-500: #e0638f;
+  --rose-600: #c94d79;
+  --rose-700: #a53a60;
+  --rose-800: #7c2a47;
+
+  --ink:       #3b2830;
+  --ink-soft:  #7b6671;
+  --ink-faint: #a8949d;
+  --paper:     #ffffff;
+  --line:      #f7dde6;
+  --line-firm: #f0cbd9;
+
+  /* Each agent owns a hue. Five voices that stay distinguishable at a glance,
+     even when four of them are speaking inside one ticket. */
+  --boss:     #a53a60;
+  --boss-bg:  #ffeaf1;
+  --inv:      #1f7a6b;
+  --inv-bg:   #e4f4f0;
+  --acct:     #9a6510;
+  --acct-bg:  #fdf1dc;
+  --fac:      #4a5bb5;
+  --fac-bg:   #e9ecfb;
+  --cs:       #8b4bb8;
+  --cs-bg:    #f3e9fb;
+  --human:    #2f6d4f;
+  --human-bg: #e6f3ec;
+
+  --ok:   #2f8f6b;
+  --warn: #c2780f;
+  --stop: #c4445c;
+
+  --shadow-sm: 0 1px 2px rgba(124, 42, 71, 0.05);
+  --shadow:    0 1px 2px rgba(124, 42, 71, 0.05), 0 10px 28px rgba(124, 42, 71, 0.08);
+  --shadow-lg: 0 2px 6px rgba(124, 42, 71, 0.07), 0 24px 56px rgba(124, 42, 71, 0.13);
+
+  --r-sm: 10px;
+  --r:    16px;
+  --r-lg: 22px;
+
+  --sans: "Inter", ui-sans-serif, -apple-system, "Segoe UI", system-ui, sans-serif;
+  --serif: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  /* The desk surface: two pools of warm light, as if from a window and a lamp. */
+  background:
+    radial-gradient(1200px 600px at 8% -10%, var(--rose-150), transparent 58%),
+    radial-gradient(900px 500px at 96% 0%, #fdeef6, transparent 52%),
+    radial-gradient(700px 700px at 50% 120%, #fff4f8, transparent 60%),
+    var(--rose-50);
+  background-attachment: fixed;
+}
+
+::selection { background: var(--rose-200); }
+
+/* Scrollbars styled so the three columns don't each sprout a grey system bar. */
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: var(--rose-200);
+  border-radius: 99px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover { background: var(--rose-300); background-clip: content-box; }
+
+button { font: inherit; cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+
+/* ============================ shell ====================================== */
+
+.desk {
+  min-height: 100%;
+  max-width: 1620px;
+  margin: 0 auto;
+  padding: 26px 28px 56px;
+}
+
+.masthead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding-bottom: 20px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand h1 {
+  font-family: var(--serif);
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 2px 0 2px;
+  font-variation-settings: "opsz" 40;
+}
+.brand .kicker {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rose-600);
+}
+.brand .tagline { color: var(--ink-soft); font-size: 14px; margin: 0; }
+
+.masthead-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.stamp-date {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--rose-700);
+  background: var(--rose-100);
+  border: 1px dashed var(--rose-300);
+  border-radius: var(--r-sm);
+  padding: 7px 13px;
+  transform: rotate(-1.2deg);
+}
+.stamp-date b { font-weight: 500; }
+
+.pill {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  padding: 6px 13px;
+  box-shadow: var(--shadow-sm);
+}
+.pill b { color: var(--ink); font-weight: 600; }
+
+.ghost-btn {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: var(--paper);
+  border: 1px solid var(--line-firm);
+  border-radius: 99px;
+  padding: 7px 15px;
+  transition: all 0.15s ease;
+}
+.ghost-btn:hover:not(:disabled) { color: var(--rose-700); border-color: var(--rose-300); box-shadow: var(--shadow-sm); }
+.ghost-btn:disabled { opacity: 0.45; }
+
+/* ============================ three columns ============================== */
+
+.columns {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr) 340px;
+  gap: 22px;
+  align-items: start;
+}
+@media (max-width: 1300px) { .columns { grid-template-columns: 300px minmax(0, 1fr); } .col-cash { grid-column: 1 / -1; } }
+@media (max-width: 900px)  { .columns { grid-template-columns: 1fr; } }
+
+.col-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 0 4px 12px;
+}
+.col-head h2 {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+.col-head .count { font-size: 11.5px; color: var(--ink-faint); font-family: var(--mono); }
+
+/* ============================ ticket cards =============================== */
+
+.ticket {
+  position: relative;
+  width: 100%;
+  text-align: left;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 16px 18px 15px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.18s cubic-bezier(.2,.8,.3,1), box-shadow 0.18s ease, border-color 0.18s ease;
+}
+/* Paper tickets sit at slightly different angles, like a real stack. */
+.ticket:nth-child(odd)  { transform: rotate(-0.35deg); }
+.ticket:nth-child(even) { transform: rotate(0.3deg); }
+.ticket:hover { transform: rotate(0deg) translateY(-2px); box-shadow: var(--shadow); border-color: var(--rose-200); }
+.ticket.selected {
+  transform: rotate(0deg);
+  border-color: var(--rose-400);
+  box-shadow: 0 0 0 3px var(--rose-100), var(--shadow);
+}
+/* The punch-hole and tape at the top make it read as a pinned slip. */
+.ticket::before {
+  content: "";
+  position: absolute;
+  top: 14px; right: 16px;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--rose-150);
+  box-shadow: inset 0 1px 2px rgba(124,42,71,.18);
+}
+
+.ticket-top { display: flex; align-items: center; gap: 9px; margin-bottom: 7px; }
+.ticket-no {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--rose-700);
+  background: var(--rose-100);
+  border-radius: 6px;
+  padding: 2px 7px;
+}
+.ticket-type { font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; }
+
+.ticket h3 { font-size: 15.5px; font-weight: 600; margin: 0 0 3px; letter-spacing: -0.008em; }
+.ticket .who { font-size: 13px; color: var(--ink-soft); margin: 0 0 11px; }
+.ticket .who em { font-style: normal; color: var(--ink); font-weight: 500; }
+
+.ticket-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.tag {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--ink-soft);
+  background: var(--rose-75);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 2px 7px;
+}
+.tag.alert { color: var(--stop); background: #fdeef1; border-color: #f8d6dd; }
+
+/* Resolved = a wax seal pressed over the card. Earned, not a grey label. */
+.seal {
+  position: absolute;
+  right: 14px; bottom: 12px;
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-family: var(--serif);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.15;
+  color: var(--rose-800);
+  background: radial-gradient(circle at 34% 30%, var(--rose-300), var(--rose-400) 62%, var(--rose-500));
+  border: 1.5px dashed rgba(255, 255, 255, 0.65);
+  box-shadow: 0 3px 9px rgba(165, 58, 96, 0.3), inset 0 2px 5px rgba(255,255,255,.4);
+  transform: rotate(-11deg);
+  animation: press 0.42s cubic-bezier(.2,1.5,.4,1) both;
+}
+@keyframes press {
+  from { transform: rotate(-11deg) scale(2.1); opacity: 0; }
+  to   { transform: rotate(-11deg) scale(1);   opacity: 1; }
+}
+.ticket.is-resolved { background: linear-gradient(135deg, #fffdfe, var(--rose-75)); }
+.ticket.is-resolved h3 { color: var(--ink-soft); }
+
+.ticket-foot { margin-top: 13px; display: flex; align-items: center; gap: 8px; }
+
+.run-btn {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, var(--rose-500), var(--rose-600));
+  border: none;
+  border-radius: 10px;
+  padding: 9px 14px;
+  box-shadow: 0 4px 14px rgba(201, 77, 121, 0.28);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+.run-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 7px 20px rgba(201, 77, 121, 0.35); }
+.run-btn:disabled { filter: grayscale(0.55); opacity: 0.6; box-shadow: none; }
+.run-btn.rerun { background: var(--paper); color: var(--rose-700); border: 1px solid var(--rose-300); box-shadow: none; }
+
+/* ============================ the wire =================================== */
+
+.wire {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 560px;
+}
+
+.wire-head {
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(var(--rose-75), var(--paper));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+.wire-head h2 { font-family: var(--serif); font-size: 17px; font-weight: 600; margin: 0; }
+.wire-head .sub { font-size: 12.5px; color: var(--ink-soft); margin: 1px 0 0; }
+
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rose-600);
+  background: var(--rose-100);
+  border-radius: 99px;
+  padding: 5px 12px;
+}
+.live .bulb { width: 7px; height: 7px; border-radius: 50%; background: var(--rose-500); animation: pulse 1.25s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.35; transform: scale(0.72); } }
+
+.idle-note { font-size: 12px; color: var(--ink-faint); font-family: var(--mono); }
+
+.feed {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 22px 24px;
+  max-height: 66vh;
+  scroll-behavior: smooth;
+}
+
+/* --- one line on the wire --- */
+
+.line {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  padding: 7px 0;
+  animation: arrive 0.3s ease both;
+}
+@keyframes arrive { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* Depth is drawn, not described: each delegation indents and keeps a thread
+   back to the agent that asked. */
+.line[data-depth="1"] { margin-left: 26px; }
+.line[data-depth="2"] { margin-left: 52px; }
+.line[data-depth="1"]::before,
+.line[data-depth="2"]::before {
+  content: "";
+  position: absolute;
+  left: -14px; top: 0; bottom: 0;
+  border-left: 1.5px solid var(--rose-150);
+}
+
+.monogram {
+  flex: none;
+  width: 30px; height: 30px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  font-family: var(--serif);
+  font-size: 12.5px;
+  font-weight: 700;
+  margin-top: 1px;
+  box-shadow: var(--shadow-sm);
+}
+
+.line-body { min-width: 0; flex: 1; }
+.line-top { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; }
+.agent-name { font-size: 13.5px; font-weight: 600; letter-spacing: -0.005em; }
+/* The Boss speaks in the display serif. One glance tells you who is in charge. */
+.agent-name.is-boss { font-family: var(--serif); font-size: 14.5px; }
+.agent-name.is-human { font-family: var(--serif); }
+
+.verb { font-size: 13px; color: var(--ink-soft); }
+.verb b { color: var(--ink); font-weight: 500; }
+
+.tool-chip {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--rose-700);
+  background: var(--rose-75);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 1px 7px;
+}
+.tool-chip.write { color: var(--acct); background: var(--acct-bg); border-color: #f2e0bd; }
+.tool-chip.failed { color: var(--stop); background: #fdeef1; border-color: #f8d6dd; }
+
+.stamp-time { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); margin-left: auto; flex: none; }
+
+.line-detail {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-detail .mono { font-family: var(--mono); font-size: 11.5px; }
+
+.line.speech .line-detail {
+  -webkit-line-clamp: 6;
+  color: var(--ink);
+  background: var(--rose-75);
+  border-left: 2.5px solid var(--rose-200);
+  border-radius: 0 10px 10px 0;
+  padding: 9px 13px;
+  margin-top: 6px;
+  font-size: 13.5px;
+}
+.line.refused .line-detail { color: var(--warn); }
+.line.failed .line-detail { color: var(--stop); }
+
+.hop-arrow { color: var(--rose-400); font-weight: 700; }
+
+.feed-empty { text-align: center; padding: 70px 24px; color: var(--ink-faint); }
+.feed-empty .big { font-size: 34px; margin-bottom: 10px; }
+.feed-empty p { max-width: 42ch; margin: 0 auto; font-size: 14px; }
+
+/* ============================ verdict ==================================== */
+
+.verdict {
+  border-top: 1px solid var(--line);
+  background: linear-gradient(var(--rose-75), var(--paper));
+  padding: 20px 22px 22px;
+}
+.verdict h3 {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+.verdict .call { font-size: 14px; margin: 0 0 14px; }
+.verdict .why { font-size: 13px; color: var(--ink-soft); margin: 0 0 16px; }
+
+.agent-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(188px, 1fr)); gap: 10px; }
+.agent-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 11px 13px;
+  background: var(--paper);
+}
+.agent-card .ac-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.agent-card .ac-name { font-size: 12.5px; font-weight: 600; }
+.agent-card .ac-stat { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); }
+.agent-card .ac-tools { display: flex; flex-wrap: wrap; gap: 4px; }
+.agent-card .ac-tools span {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-soft);
+  background: var(--rose-75);
+  border-radius: 5px;
+  padding: 1px 5px;
+}
+
+.actions-list { list-style: none; padding: 0; margin: 14px 0 0; }
+.actions-list li {
+  font-size: 13px;
+  color: var(--ink-soft);
+  padding: 7px 0 7px 22px;
+  position: relative;
+  border-top: 1px dashed var(--line);
+}
+.actions-list li::before { content: "✓"; position: absolute; left: 2px; color: var(--ok); font-weight: 700; }
+
+/* ============================ cash drawer ================================ */
+
+.drawer {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.drawer-head {
+  padding: 15px 20px 0;
+}
+.drawer-head .label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rose-600);
+}
+
+.balance {
+  font-family: var(--serif);
+  font-size: 42px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  padding: 2px 20px 0;
+  transition: color 0.3s ease;
+}
+.balance.dropping { color: var(--stop); animation: shake 0.5s ease; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  22% { transform: translateX(-4px); }
+  45% { transform: translateX(3px); }
+  70% { transform: translateX(-2px); }
+}
+.balance-sub { padding: 0 20px 14px; font-size: 12.5px; color: var(--ink-soft); }
+
+/* A paper tape under the balance: a one-way ledger, since cash only leaves. */
+.tape {
+  border-top: 1px dashed var(--line-firm);
+  background:
+    repeating-linear-gradient(90deg, transparent 0 7px, var(--rose-75) 7px 8px),
+    var(--rose-50);
+  padding: 11px 20px 13px;
+}
+.tape-row { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11.5px; color: var(--ink-soft); }
+.tape-row b { color: var(--ink); font-weight: 500; }
+.tape-note { font-size: 11px; color: var(--ink-faint); margin-top: 7px; font-style: italic; }
+
+/* --- approval slips --- */
+
+.slip {
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 15px 17px;
+  margin-bottom: 11px;
+  background: var(--paper);
+  box-shadow: var(--shadow-sm);
+}
+.slip.pending {
+  border-color: var(--rose-300);
+  background: linear-gradient(var(--rose-75), var(--paper));
+  box-shadow: 0 0 0 3px var(--rose-100), var(--shadow-sm);
+}
+.slip-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 4px; }
+.slip-amount { font-family: var(--serif); font-size: 23px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.slip-kind { font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); }
+.slip-why { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 12px; }
+.slip-meta { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); margin-bottom: 11px; }
+
+.slip-buttons { display: flex; gap: 8px; }
+.approve {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #3f9b74, #2f8f6b);
+  border: none;
+  border-radius: 10px;
+  padding: 9px;
+  box-shadow: 0 4px 13px rgba(47, 143, 107, 0.28);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.approve:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 7px 18px rgba(47, 143, 107, 0.34); }
+.reject {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: var(--paper);
+  border: 1px solid var(--line-firm);
+  border-radius: 10px;
+  padding: 9px 15px;
+}
+.reject:hover:not(:disabled) { color: var(--stop); border-color: #f0c2cc; }
+.approve:disabled, .reject:disabled { opacity: 0.5; }
+
+.slip-settled {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--ok);
+  font-weight: 500;
+}
+.slip-settled.rejected { color: var(--ink-faint); }
+
+.who-field {
+  width: 100%;
+  font: inherit;
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--rose-50);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+}
+.who-field:focus { outline: 2px solid var(--rose-200); outline-offset: 1px; border-color: var(--rose-300); }
+
+.gate-note {
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  background: var(--rose-75);
+  border: 1px dashed var(--rose-200);
+  border-radius: 10px;
+  padding: 10px 13px;
+  line-height: 1.5;
+}
+.gate-note b { color: var(--rose-700); }
+
+.quiet-panel {
+  text-align: center;
+  padding: 26px 18px;
+  color: var(--ink-faint);
+  font-size: 13px;
+  border: 1px dashed var(--line-firm);
+  border-radius: var(--r);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: #fff;
+  font-size: 13.5px;
+  padding: 12px 20px;
+  border-radius: 99px;
+  box-shadow: var(--shadow-lg);
+  z-index: 50;
+  animation: arrive 0.25s ease both;
+  max-width: 80vw;
+}
+.toast.bad { background: var(--stop); }

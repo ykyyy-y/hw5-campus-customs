@@ -1,0 +1,27 @@
+# Secrets — never commit the real key. Use .env.example as the template.
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# Node / Vite
+node_modules/
+dist/
+*.local
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# The original course download. Both database files are committed unzipped,
+# so the archive is redundant in the repo.
+data.zip
+
+# NOTE: data/campus_customs.db and data/campus_customs_new.db are deliberately
+# committed so a grader can clone and run without any setup.
