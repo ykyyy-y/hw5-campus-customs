@@ -544,3 +544,47 @@ surfaced a genuine defect in ticket 102 that the Problem 9 summary had mistaken 
 behaviour, and that correction is now the centrepiece of the performance section.
 
 ---
+
+## Problem 11 — Submit to GitHub
+
+Push the project to a public GitHub repository graders can clone, submit the link to Canvas
+and save it in `output/github_url.txt`. Keep the real `.env` out of the repo, but include
+both database files in `data/` so the app runs without setup. The README must explain how to
+copy the original database to the working copy, start the MCP server, start the FastAPI
+backend, start the React board, and reset the database before a full three-ticket run — and
+the repository must match the expected file layout.
+
+### Prompt I typed
+
+> now going to problem #11: Submit to GitHub
+>
+> upload your code to a public github repository to allow graders to clone it. you need to
+> submit the repository link to Canvas and also save it inside output/github_url.txt.
+>
+> make sure you do not upload your actual .env file to the GitHub repo. however, you must
+> provide both database files located in the data/ directory (the original and your working
+> copy) to ensure graders can execute your application without issues.
+>
+> your README should explain: - copy original DB to the working copy when you need a clean
+> run, start MCP server, start FastAPI backend, start the React board, reset the DB before a
+> full three-ticket run
+>
+> and check the expected file layout through the photo
+>
+> (with the expected file layout attached)
+
+### Follow-up prompt
+
+No follow-up prompt was needed; the first prompt was sufficient. It named the visibility, the
+file to save the link in, the one file that must never be pushed, the two that must be, the
+five workflows the README had to cover, and supplied the target layout — so `.gitignore`
+excludes `.env` while force-including `.env.example`, both database files are committed, the
+README documents all five workflows in order, and every path in the expected layout was
+checked against `git ls-files` before pushing. The published repository was then cloned fresh
+to a temporary folder and verified: no `.env` in the clone, both databases open and readable
+(original at 3 open tickets / $3,400.00, working copy at 3 resolved / $160.00), and a scan
+confirmed the real key value appears in no committed file.
+
+**Repository:** https://github.com/ykyyy-y/hw5-campus-customs
+
+---
